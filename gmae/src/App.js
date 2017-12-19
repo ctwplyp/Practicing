@@ -5,14 +5,26 @@ import './App.css';
 import Client from 'boardgame.io/client';
 import Game from 'boardgame.io/game';
 
+function IsVictory(cells){
+	if (cells[0]!=null)
+	return true;
+}
+
 const TicTacToe = Game({
   G: { cells: Array(9).fill(null) },
 
   moves: {
     clickCell(G, ctx, id) {
-      let cells = [...G.cells];  // don't mutate original state.
-      cells[id] = ctx.currentPlayer;
-      return {...G, cells};      // don't mutate original state.
+      const cells = [...G.cells];
+      if (cells[id] == null) {
+      	cells[id] = ctx.currentPlayer;
+	}
+      	let winner = null;
+	if (IsVictory(cells)) {
+		winner = ctx.currentPlayer;
+	}
+
+	return {...G, cells, winner};      // don't mutate original state.
     }
   }
 });
